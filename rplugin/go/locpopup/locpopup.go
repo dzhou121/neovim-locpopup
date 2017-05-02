@@ -1,6 +1,7 @@
 package locpopup
 
 import (
+	"fmt"
 	"sort"
 	"sync"
 
@@ -53,6 +54,31 @@ func (l *Locpop) show(args []interface{}) {
 		}
 		l.mutex.Unlock()
 	}()
+
+	buf, err := l.nvim.CurrentBuffer()
+	if err != nil {
+		return
+	}
+	buftype := new(string)
+	err = l.nvim.BufferOption(buf, "buftype", buftype)
+	if err != nil {
+		return
+	}
+	if *buftype == "terminal" {
+		return
+	}
+
+	mode := new(string)
+	err = l.nvim.Call("mode", mode, "")
+	if err != nil {
+		fmt.Println("mode error", err)
+		return
+	}
+	fmt.Println("mode is", *mode)
+	if *mode != "n" {
+		return
+	}
+
 	curWin, err := l.nvim.CurrentWindow()
 	if err != nil {
 		return
