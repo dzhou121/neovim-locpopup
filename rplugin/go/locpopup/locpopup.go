@@ -1,7 +1,6 @@
 package locpopup
 
 import (
-	"fmt"
 	"sort"
 	"sync"
 
@@ -71,10 +70,8 @@ func (l *Locpop) show(args []interface{}) {
 	mode := new(string)
 	err = l.nvim.Call("mode", mode, "")
 	if err != nil {
-		fmt.Println("mode error", err)
 		return
 	}
-	fmt.Println("mode is", *mode)
 	if *mode != "n" {
 		return
 	}
