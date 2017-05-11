@@ -23,18 +23,22 @@ func RegisterPlugin(nvim *nvim.Nvim) {
 	}
 	nvim.Subscribe("LocPopup")
 	nvim.RegisterHandler("LocPopup", func(args ...interface{}) {
-		if len(args) < 1 {
-			return
-		}
-		event, ok := args[0].(string)
-		if !ok {
-			return
-		}
-		switch event {
-		case "show":
-			locpop.show(args[1:])
-		}
+		go locpop.handle(args)
 	})
+}
+
+func (l *Locpop) handle(args ...interface{}) {
+	if len(args) < 1 {
+		return
+	}
+	event, ok := args[0].(string)
+	if !ok {
+		return
+	}
+	switch event {
+	case "show":
+		l.show(args[1:])
+	}
 }
 
 func (l *Locpop) show(args []interface{}) {
