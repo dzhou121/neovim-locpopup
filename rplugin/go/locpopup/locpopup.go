@@ -23,7 +23,7 @@ func RegisterPlugin(nvim *nvim.Nvim) {
 	}
 	nvim.Subscribe("LocPopup")
 	nvim.RegisterHandler("LocPopup", func(args ...interface{}) {
-		go locpop.handle(args)
+		go locpop.handle(args...)
 	})
 }
 
